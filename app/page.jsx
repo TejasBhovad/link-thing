@@ -7,6 +7,9 @@ import IntroHor from "@/components/IntroHor";
 import Divider from "@/components/Divider";
 import ClickCard from "@/components/ClickCard";
 import ClickButton from "@/components/ClickButton";
+import Title from "@/components/Title";
+
+
 // create array of socials with links ,names and logos
 const socials = [
   {
@@ -60,6 +63,20 @@ const data = [
     type: "click-button",
     heading: "heading 2",
   },
+  {
+    order: 5,
+    type: "title",
+    heading: "heading 2",
+    // align: "center",
+    align: "start",
+  },
+  {
+    order: 6,
+    type: "click-card",
+    heading: "heading",
+    desc: "desc",
+    logo: LinkedIn,
+  },
 ];
 function Home() {
   let prev = -1;
@@ -74,7 +91,9 @@ function Home() {
       );
     } else if (item.type === "click-button" && prev === item.order) {
       const lastButtonIndex = combinedClickButtons.length - 1;
-      const childrenArray = Array.isArray(combinedClickButtons[lastButtonIndex].props.children)
+      const childrenArray = Array.isArray(
+        combinedClickButtons[lastButtonIndex].props.children
+      )
         ? combinedClickButtons[lastButtonIndex].props.children
         : [combinedClickButtons[lastButtonIndex].props.children];
 
@@ -117,10 +136,14 @@ function Home() {
                 logo={item.logo}
               />
             );
+          } else if (item.type === "title") {
+            return <Title heading={item.heading} align={item.align} />;
+          } else if (item.type === "divider") {
+            return <Divider />;
+          } else if (item.type === "click-button") {
+            return combinedClickButtons.shift();
           }
         })}
-
-        {combinedClickButtons}
       </div>
     </main>
   );
