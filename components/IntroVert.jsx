@@ -1,16 +1,18 @@
 import React from "react";
 import Image from "next/image";
 import Links from "@/components/Links";
-
+import { useSession } from "next-auth/react";
 const IntroVert = ({ name, Id, imageUrl, socialLinks }) => {
+  const { data: session } = useSession();
   const imageSize = 1080;
   return (
     <div className=" h-30 w-full flex">
       <div className="image w-1/3 h-full justify-center flex items-center min-w-[150px]">
         <Image
-          src={imageUrl}
+          src={session?.user?.image}
           width={imageSize}
           height={imageSize}
+          alt="profile picture"
           className="object-cover h-24 w-24 rounded-full md:h-40 sm:w-40"
         />
       </div>

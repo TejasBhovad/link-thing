@@ -1,73 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 224 71.4% 4.1%;
- 
+
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
- 
+
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
- 
+
     --border: 220 13% 91%;
     --input: 220 13% 91%;
- 
+
     --primary: 220.9 39.3% 11%;
     --primary-foreground: 210 20% 98%;
- 
+
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
- 
+
     --accent: 220 14.3% 95.9%;
     --accent-foreground: 220.9 39.3% 11%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
- 
+
     --ring: 217.9 10.6% 64.9%;
- 
+
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
- 
+
     --muted: 215 27.9% 16.9%;
     --muted-foreground: 217.9 10.6% 64.9%;
- 
+
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
- 
+
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
- 
+
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
- 
+
     --primary: 210 20% 98%;
     --primary-foreground: 220.9 39.3% 11%;
- 
+
     --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 20% 98%;
- 
+
     --accent: 215 27.9% 16.9%;
     --accent-foreground: 210 20% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
- 
+
     --ring: 215 27.9% 16.9%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -75,4 +75,76 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+.drag-svg {
+  fill: rgb(67, 67, 67); /* Change the color here */
+}
+.bin-svg {
+  transition: ease-in-out 0.125s;
+}
+.bin-svg:hover {
+  fill: rgb(216, 20, 20); /* Change the color here */
+  scale: 1.05;
+}
+input {
+  background-color: rgba(255, 0, 0, 0);
+}
+.dragarea {
+  background-color: rgb(18, 18, 18);
+}
+.phone {
+  aspect-ratio: 9 / 16;
+  max-height: 50rem;
+}
+.display {
+  min-width: 20rem;
+}
+.screen {
+  background-color: rgb(229, 229, 229);
+  height: 92.5%;
+  width: 88.5%;
+  border-radius: 2rem;
+}
+html {
+  height: 100%;
+  width: 100%;
+}
+._black {
+  min-height: 230px;
+}
+.dropdown {
+  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end;
+  z-index: 5;
+  position: absolute;
+}
+
+.pfp {
+  @apply rounded-full h-10 w-10;
+}
+.left-part {
+  min-width: 560px;
+}
+.options {
+  border-radius: 0.75rem 0 0 0;
+}
+.menu {
+  min-width: 250px;
+}
+.pic {
+  max-width: 140px;
+  min-width: 124px;
+}
+.superscript {
+  font-size: 0.75rem;
+  vertical-align: super;
+}
+.add_logo {
+  width: 6rem;
+  height: 6rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  fill: rgb(154, 154, 154);
+}
+.form {
+  min-height: 495px;
 }

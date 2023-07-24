@@ -1,16 +1,20 @@
 import React from "react";
 import Image from "next/image";
 import Links from "@/components/Links";
+import { useSession } from "next-auth/react";
+// get profile iamge from session
 
 const IntroHor = ({ name, Id, imageUrl, socialLinks }) => {
+  const { data: session } = useSession();
   const imageSize = 1080;
   return (
     <div className=" h-70 gap-1 w-full flex-col justify-center items-center">
       <div className="image h-auto justify-center flex items-center min-w-[150px]">
         <Image
-          src={imageUrl}
+          src={session?.user?.image}
           width={imageSize}
           height={imageSize}
+          alt="profile picture"
           className="object-cover h-24 w-24 rounded-full md:h-40 sm:w-40"
         />
       </div>
