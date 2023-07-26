@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { set } from "mongoose";
 
 const Account = () => {
   // create a session qnd get email
@@ -18,6 +17,29 @@ const Account = () => {
   const [username, setUsername] = useState("");
   // create state fir image
   const [image, setImage] = useState(session?.user?.image);
+  const [uploadedImage, setUploadedImage] = useState(session?.user?.image);
+
+  const handleImageUpload = async () => {
+    try {
+      // Send the image data to the server
+      const response = await fetch("/api/uploadthing?slug=images", {
+        method: "POST",
+        body: uploadedImage,
+        headers: {
+          "Content-Type": "image/jpeg", // Adjust the content type as needed
+        },
+      });
+
+      if (response.ok) {
+        console.log("Image uploaded successfully!");
+        // Handle any further actions after successful upload
+      } else {
+        console.error("Failed to upload image.");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -83,11 +105,13 @@ const Account = () => {
             </div>
             <div className="px-8">
               <span className="superscript font-sm">Profile Picture</span>
-              <DragAndDrop />
+              <DragAndDrop setImage={setUploadedImage} />
             </div>
           </div>
           {/* Button */}
-          <Button className="w-32 text-lg mt-5">Save</Button>
+          <Button className="w-32 text-lg mt-5" onClick={handleImageUpload}>
+            Save
+          </Button>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import Socials from "@/components/profile/Socials";
 import DangerZone from "@/components/profile/DangerZone";
 
 const Profile = () => {
-  const [activeToggle, setActiveToggle] = useState("Profile");
+  const [activeToggle, setActiveToggle] = useState("Socials");
   // display toggle state
   useEffect(() => {
     console.log(activeToggle);
@@ -25,7 +25,6 @@ const Profile = () => {
           {activeToggle === "Profile" && <Account />}
           {activeToggle === "Socials" && <Socials />}
           {activeToggle === "Danger Zone" && <DangerZone />}
-          
         </div>
       </div>
     </section>

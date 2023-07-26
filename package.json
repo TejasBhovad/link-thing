@@ -16,7 +16,8 @@
     "clsx": "^1.2.1",
     "lucide-react": "^0.259.0",
     "mongodb": "^5.7.0",
-    "mongoose": "^7.4.0",
+    "mongodb-client-encryption": "^2.9.0",
+    "mongoose": "^7.4.1",
     "next": "13.4.7",
     "next-auth": "^4.22.3",
     "postcss": "8.4.24",
@@ -24,6 +25,7 @@
     "react-dom": "18.2.0",
     "tailwind-merge": "^1.13.2",
     "tailwindcss": "3.3.2",
-    "tailwindcss-animate": "^1.0.6"
+    "tailwindcss-animate": "^1.0.6",
+    "uploadthing": "^5.2.1"
   }
 }

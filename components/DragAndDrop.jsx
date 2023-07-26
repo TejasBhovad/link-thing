@@ -1,7 +1,8 @@
+"use client";
 import { useState } from "react";
 import Add from "@/components/logos/Add";
 
-const DragAndDrop = () => {
+const DragAndDrop = ({ setImage }) => {
   const [thumbnail, setThumbnail] = useState(null);
 
   const handleDrop = (e) => {
@@ -20,17 +21,12 @@ const DragAndDrop = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         setThumbnail(e.target.result);
+        setImage(e.target.result); // Set the image data in
       };
       reader.readAsDataURL(file);
     } else {
       alert("Please upload a valid image (maximum size: 1MB).");
     }
-  };
-
-  const handleImageUpload = () => {
-    // Here, you can do something with the image data, like send it to the server
-    // For demonstration purposes, we'll just log the image data URL in the console.
-    console.log("Uploaded Image Data URL:", thumbnail);
   };
 
   return (
@@ -51,6 +47,18 @@ const DragAndDrop = () => {
               onChange={handleFileInput}
             />
           </label>
+          {/* <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              console.log("Files: ", res);
+              alert("Upload Completed");
+            }}
+            onUploadError={(error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          /> */}
         </div>
       ) : (
         <>
