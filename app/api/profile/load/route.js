@@ -8,7 +8,7 @@ export const GET = async () => {
 
     // const links = await User.find({});
     //   find the user with given email
-    const user = await User.findOne({});
+    const user = await User.find({});
     //   if user not found
     if (!user) {
       return new Response("User not found", { status: 404 });

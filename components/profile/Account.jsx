@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { set } from "mongoose";
 
 const Account = () => {
   // create a session qnd get email
@@ -18,6 +19,9 @@ const Account = () => {
   // create state fir image
   const [image, setImage] = useState(session?.user?.image);
   const [uploadedImage, setUploadedImage] = useState(session?.user?.image);
+  // create array ussate for storing all user data
+  const [userData, setUserData] = useState([]);
+  const [isIdAvailable, setIsIdAvailable] = useState(true);
 
   const handleImageUpload = async () => {
     try {
@@ -50,10 +54,14 @@ const Account = () => {
           throw new Error("Something went wrong");
         }
         const data = await response.json();
-        // console.log(data);
-        setUsername(name); // Replace 'username' with the actual property name for the username
-        setUserId(data.username); // Replace 'userId' with the actual property name for the userId
-        setImage(data.image);
+        setUserData(data);
+        // filter out data of current user
+        const userData = data.filter((user) => user.email === email);
+
+        // console.log(userData);
+        setUsername(userData[0].name); // Replace 'username' with the actual property name for the username
+        setUserId(userData[0].username); // Replace 'userId' with the actual property name for the userId
+        setImage(userData[0].image);
       } catch (error) {
         console.error("Failed to fetch user data", error);
       }
@@ -61,6 +69,59 @@ const Account = () => {
 
     fetchUserData();
   }, [email]);
+
+  const uploadUserData = async () => {
+    try {
+      console.log("uploading user data");
+      console.log(userId);
+      console.log(username);
+      console.log(image);
+      console.log(email);
+
+      const response = await fetch(`/api/profile/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: userId,
+          name: username,
+          image: image,
+          email: session.user.email,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Failed to fetch user data", error);
+    }
+  };
+  const handleSave = () => {
+    // uploadUserData();
+    console.log(userId);
+    console.log(username);
+  };
+  const handleInputChange = (event) => {
+    const { value, classList } = event.target;
+
+    if (classList.contains("ID")) {
+      // check if id is already taken
+      if (userData.some((user) => user.username === value)) {
+        setIsIdAvailable(false);
+        return;
+      }
+      setIsIdAvailable(true);
+      setUserId(value);
+      // console.log(userId);
+    } else if (classList.contains("NAME")) {
+      setUsername(value);
+      // console.log(username);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full w-full">
       <div className="h-20 text-3xl font-semibold flex items-center justify-start px-8">
@@ -79,7 +140,7 @@ const Account = () => {
               </div>
             </div>
             <div className="w-4/5 h-full  flex flex-col py-4">
-              <span className="text-xl">{username}</span>
+              <span className="text-xl font-semibold">{username}</span>
               <span>@{userId}</span>
             </div>
           </div>
@@ -90,8 +151,9 @@ const Account = () => {
               <input
                 type="text"
                 placeholder="Full Name"
-                defaultValue={name}
-                className="focus:outline-none border-b border-gray-400 border-b-2 w-3/4 font-semibold"
+                defaultValue={username}
+                onChange={handleInputChange}
+                className={`NAME focus:outline-none border-b border-gray-400 border-b-2 w-3/4 font-semibold`}
               />
             </div>
             <div className="h-16 w-full flex flex-col gap-0 justify-center px-8">
@@ -100,7 +162,10 @@ const Account = () => {
                 type="text"
                 placeholder="User ID"
                 defaultValue={userId}
-                className="focus:outline-none border-b border-gray-400 border-b-2 w-3/4 font-semibold"
+                onChange={handleInputChange}
+                className={`${
+                  isIdAvailable ? "border-gray-400" : "border-red-500"
+                } ID focus:outline-none border-b border-gray-400 border-b-2 w-3/4 font-semibold`}
               />
             </div>
             <div className="px-8">
@@ -109,7 +174,7 @@ const Account = () => {
             </div>
           </div>
           {/* Button */}
-          <Button className="w-32 text-lg mt-5" onClick={handleImageUpload}>
+          <Button className="w-32 text-lg mt-5" onClick={handleSave}>
             Save
           </Button>
         </div>

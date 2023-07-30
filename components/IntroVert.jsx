@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Links from "@/components/Links";
-import { useSession } from "next-auth/react";
-const IntroVert = ({ name, Id, imageUrl, socialLinks }) => {
-  const { data: session } = useSession();
+
+const IntroVert = ({ name, Id, imageUrl, email }) => {
+
   const imageSize = 1080;
   return (
     <div className=" h-30 w-full flex">
       <div className="image w-1/3 h-full justify-center flex items-center min-w-[150px]">
         <Image
-          src={session?.user?.image}
+          src={imageUrl}
           width={imageSize}
           height={imageSize}
           alt="profile picture"
@@ -24,7 +24,7 @@ const IntroVert = ({ name, Id, imageUrl, socialLinks }) => {
           @{Id}
         </div>
         <div className="links w-full md:mb-0 h-auto">
-          <Links socialLinks={socialLinks} />
+          <Links email={email} />
         </div>
       </div>
     </div>

@@ -61,6 +61,7 @@ const handler = NextAuth({
           }
 
           const newUser = await User.create({
+            name: profile.name,
             email: profile.email,
             username: modifiedUsername,
             image: profile.picture,

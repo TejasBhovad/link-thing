@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import React, { useEffect, useState, useCallback, use } from "react";
 import GitHub from "@/components/logos/GitHub";
 import YouTube from "@/components/logos/YouTube";
@@ -12,13 +12,13 @@ import Divider from "@/components/Divider";
 import ClickCard from "@/components/ClickCard";
 import ClickButton from "@/components/ClickButton";
 import Title from "@/components/Title";
-import Link from "next/link";
 import Nav from "@/components/Nav";
+import { getSession } from "next-auth/react";
 
 import { Toggle } from "@/components/ui/toggle";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { getSession } from "next-auth/react";
+import { set } from "mongoose";
 
 const ItemTypes = {
   CARD: "card",
@@ -29,57 +29,37 @@ const ItemTypes = {
 
 const Admin = () => {
   const [activeToggle, setActiveToggle] = useState("horizontal");
+  const [userData, setUserData] = useState([]);
   const [linksArray, setLinksArray] = useState([]);
   const { data: session } = useSession();
   const profile_picture = session?.user?.image;
-
-  let socials = [
-    {
-      name: "GitHub",
-      link: "google.com",
-      logo: GitHub,
-    },
-    {
-      name: "YouTube",
-      link: "google.com",
-      logo: YouTube,
-    },
-    {
-      name: "LinkedIn",
-      link: "google.com",
-      logo: LinkedIn,
-    },
-  ];
-
-  // convert socials to socialLinks usestate
-  const [socialLinks, setSocialLinks] = useState([
-    {
-      name: "GitHub",
-
-      link: "google.com",
-      logo: GitHub,
-
-      order: 1,
-    },
-    {
-      name: "YouTube",
-
-      link: "google.com",
-      logo: YouTube,
-      order: 2,
-    },
-    {
-      name: "LinkedIn",
-
-      link: "google.com",
-      logo: LinkedIn,
-      order: 3,
-    },
-  ]);
-
+  const email = session?.user?.email;
+  const name = session?.user?.name;
+  const [userID, setUserID] = useState("");
+  const [EMAIL, setEMAIL] = useState(session?.user?.email);
   // Define a state to keep track of the submission status and cool down
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(`/api/profile/load`);
 
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+      const data = await response.json();
+      setUserData(data);
+      const foundUser = data.find((user) => user.email === EMAIL);
+      if (foundUser) {
+        console.log(foundUser.username);
+        setUserID(foundUser.username);
+      } else {
+        // Handle the case when user data is not found
+        console.error("User data not found.");
+      }
+    } catch (error) {
+      console.error("Failed to fetch user data", error);
+    }
+  };
   const fetchUserLinks = async () => {
     try {
       if (!session || !session.user || !session.user.email) {
@@ -93,7 +73,7 @@ const Admin = () => {
 
       const data = await response.json();
       const userLinks = data.filter((link) => link.creator === userId);
-      console.log(userLinks[0].links);
+      // console.log(userLinks[0].links);
 
       // create a function that will correctly format userlinks to linkArray
       const formatUserLinks = (userLinks) => {
@@ -103,10 +83,10 @@ const Admin = () => {
             formattedLinks.push({
               order: link.order,
               type: link.type,
-              name: link.name,
-              Id: link.Id,
+              name: name,
+              Id: userID,
               imageUrl: profile_picture,
-              socialLinks: socialLinks,
+              email: EMAIL,
             });
           } else if (link.type === "card") {
             formattedLinks.push({
@@ -140,17 +120,48 @@ const Admin = () => {
       console.error("Failed to fetch user's links:", error);
     }
   };
-
   useEffect(() => {
-    if (session) {
+    getSession().then((session) => {
+      fetchUserData();
+      setUserID(session?.user?.name);
+      setEMAIL(session?.user?.email);
+
       fetchUserLinks();
-    }
+    });
   }, [session]);
+  // on reload fetch use Session to update the userID and EMAIL
+  useEffect(() => {
+    getSession().then((session) => {
+      setUserID(session?.user?.name);
+      setEMAIL(session?.user?.email);
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   getSession().then((session) => {
+  //     setUserID(session?.user?.name);
+  //     setEMAIL(session?.user?.email);
+  //   });
+
+  //   setTimeout(() => {
+  //     fetchUserData();
+  //     fetchUserLinks();
+  //   }, 1000);
+  // }, [session]);
+
+  // useEffect(() => {
+  //   getSession().then((session) => {
+  //     setUserID(session?.user?.name);
+  //     setEMAIL(session?.user?.email);
+  //     fetchUserData();
+  //     fetchUserLinks();
+  //   });
+  // }, []);
 
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
-      console.log("submitting");
+      // console.log("submitting");
 
       const response = await fetch("/api/links/save", {
         method: "POST",
@@ -165,9 +176,9 @@ const Admin = () => {
       if (!response.ok) {
         throw new Error("Something went wrong");
       }
-      console.log(data);
+      // console.log(data);
       setIsSubmitting(false);
-      console.log(linksArray);
+      // console.log(linksArray);
     } catch (error) {
       setIsSubmitting(false);
       console.log("submitted");
@@ -187,17 +198,17 @@ const Admin = () => {
           name: "Home",
           Id: "home",
           imageUrl: profile_picture,
-          socialLinks: socialLinks,
+          email: EMAIL,
         };
         updatedArray.unshift(newLink);
       } else {
         const newLink = {
           order: 1,
           type: "about-hor",
-          name: "Home",
-          Id: "home",
+          name: "Name",
+          Id: "ID",
           imageUrl: profile_picture,
-          socialLinks: socialLinks,
+          email: EMAIL,
         };
         updatedArray.unshift(newLink);
       }
@@ -659,7 +670,14 @@ const Admin = () => {
 
         {/* Right Part */}
         <div className="display bg-gray-300 md:w-2/5 flex-1 overflow-y-auto h-full w-full snap-center flex flex-col justify-center items-center flex-shrink-0">
-          <div className="preview text-lg font-bold p-4">Preview</div>
+          <div className="preview text-lg font-bold p-4">
+            Preview:{" "}
+            <Link href={`/${userID}`}>
+              <span className="font-md text-semibold text-blue-600">
+                /{userID}
+              </span>
+            </Link>
+          </div>
           <main className="justify-center flex w-full h-full bg-gray-100">
             <div className=" mt-5 mobile w-3/4 h-100 max-w-3xl">
               {linksArray.map((item) => {
@@ -668,9 +686,9 @@ const Admin = () => {
                     <IntroVert
                       key={item.order}
                       name={item.name}
-                      Id={item.Id}
+                      Id={userID}
                       imageUrl={item.imageUrl}
-                      socialLinks={item.socialLinks}
+                      email={EMAIL}
                     />
                   );
                 } else if (item.type === "about-hor") {
@@ -678,9 +696,9 @@ const Admin = () => {
                     <IntroHor
                       key={item.order}
                       name={item.name}
-                      Id={item.Id}
+                      Id={userID}
                       imageUrl={item.imageUrl}
-                      socialLinks={item.socialLinks}
+                      email={EMAIL}
                     />
                   );
                 } else if (item.type === "card") {

@@ -1,23 +1,27 @@
 import React from "react";
 import Image from "next/image";
 import Links from "@/components/Links";
-import { useSession } from "next-auth/react";
-// get profile iamge from session
+import { useEffect } from "react";
 
-const IntroHor = ({ name, Id, imageUrl, socialLinks }) => {
-  const { data: session } = useSession();
+
+const IntroHor = ({ name, Id, imageUrl, email }) => {
+  useEffect(() => {
+    console.log("email", email);
+  }, []);
+;
   const imageSize = 1080;
   return (
     <div className=" h-70 gap-1 w-full flex-col justify-center items-center">
       <div className="image h-auto justify-center flex items-center min-w-[150px]">
         <Image
-          src={session?.user?.image}
+          src={imageUrl}
           width={imageSize}
           height={imageSize}
           alt="profile picture"
           className="object-cover h-24 w-24 rounded-full md:h-40 sm:w-40"
         />
       </div>
+
       <div className="min-w-[150px] container flex-col justify-center items-center">
         <div className="name mt-2 h-1/3 w-full items-center text-center flex max-h-8 font-semibold text-black text-xl md:text-3xl justify-center">
           {name}
@@ -26,7 +30,7 @@ const IntroHor = ({ name, Id, imageUrl, socialLinks }) => {
           @{Id}
         </div>
         <div className="links mt-2 w-full md:mb-0 h-auto justify-center flex items-center">
-          <Links socialLinks={socialLinks} className="justify-center" />
+          <Links className="justify-center" email={email} />
         </div>
       </div>
     </div>

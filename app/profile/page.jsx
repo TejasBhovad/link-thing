@@ -7,10 +7,10 @@ import Socials from "@/components/profile/Socials";
 import DangerZone from "@/components/profile/DangerZone";
 
 const Profile = () => {
-  const [activeToggle, setActiveToggle] = useState("Socials");
+  const [activeToggle, setActiveToggle] = useState("Profile");
   // display toggle state
   useEffect(() => {
-    console.log(activeToggle);
+    // console.log(activeToggle);
   }, [activeToggle]);
   return (
     <section className="w-full h-full flex flex-col">

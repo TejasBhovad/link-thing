@@ -18,6 +18,10 @@ const UserSchema = new Schema({
   image: {
     type: String,
   },
+  name: {
+    type: String,
+    required: [true, "Name is required!"],
+  },
 });
 const User = models.User || model("User", UserSchema);
 export default User;

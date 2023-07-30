@@ -45,7 +45,7 @@ const Nav = () => {
               <Button
                 type="button"
                 onClick={() => {
-                  signOut();
+                  signOut({ callbackUrl: "/" });
                 }}
                 variant="secondary"
                 className="text-lg font-semibold rounded-xl border-black border-2"
@@ -119,7 +119,7 @@ const Nav = () => {
                     className="text-sm font-inter text-gray-700 hover:text-gray-500 font-medium"
                     onClick={() => {
                       setToggleDropdown(false);
-                      signOut();
+                      signOut({ callbackUrl: "/" });
                     }}
                   >
                     <Button className="pd-0.5" type="button">
