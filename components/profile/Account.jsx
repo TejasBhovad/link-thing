@@ -59,7 +59,9 @@ const Account = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/profile/load`,{ next: { revalidate: 1 } });
+        const response = await fetch(`/api/profile/load`, {
+          next: { revalidate: 1 },
+        });
 
         if (!response.ok) {
           throw new Error("Something went wrong");
@@ -74,7 +76,6 @@ const Account = () => {
         setUsername(userData[0].name); // Replace 'username' with the actual property name for the username
         setUserId(userData[0].username); // Replace 'userId' with the actual property name for the userId
         setImage(userData[0].image);
-        
       } catch (error) {
         console.error("Failed to fetch user data", error);
       }
@@ -129,7 +130,7 @@ const Account = () => {
   const handleInputChange = (event) => {
     const { value, classList } = event.target;
     const alphanumericRegex = /^[a-zA-Z0-9]+$/; // Regular expression for alphanumeric characters
-    
+
     if (classList.contains("ID")) {
       // Check if ID is already taken
       if (userData.some((user) => user.username === value)) {
@@ -154,8 +155,7 @@ const Account = () => {
         setIsIdAvailable(false);
         toast({
           title: "Invalid ID length",
-          description:
-            "ID should be between 8 and 20 characters in length.",
+          description: "ID should be between 8 and 20 characters in length.",
         });
         return;
       }
@@ -165,7 +165,6 @@ const Account = () => {
       setUsername(value);
     }
   };
-  
 
   return (
     <div className="flex flex-col h-full w-full">

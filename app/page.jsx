@@ -1,7 +1,5 @@
-
 import Nav from "@/components/Nav";
 import React from "react";
-
 
 function Home() {
   return (
@@ -9,7 +7,7 @@ function Home() {
       <Nav />
       <main className="flex justify-center items-center w-full h-screen">
         <div className=" h-3/5 w-11/12 flex justify-center items-center flex-col gap-8 mb-10">
-          <span className="text-7xl font-bold hero-title text-center">
+          <span className="sm:text-7xl text-4xl font-bold hero-title text-center justify-center items-center ">
             Links made Simple
           </span>
           <div className="button-link flex text-xl">

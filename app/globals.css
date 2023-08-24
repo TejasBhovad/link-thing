@@ -148,3 +148,9 @@ html {
 .form {
   min-height: 495px;
 }
+/* hide mnu on small display */
+@media (max-width: 768px) {
+  .menu {
+    display: none;
+  }
+}

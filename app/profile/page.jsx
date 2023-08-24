@@ -20,7 +20,7 @@ const Profile = () => {
         <div className="menu h-full w-1/4 bg-white">
           <Menu activeToggle={activeToggle} setActiveToggle={setActiveToggle} />
         </div>
-        <div className="options h-full w-3/4 bg-gray-200">
+        <div className="options h-full sm:w-3/4 w-full bg-gray-200">
           {/* based on active toggle show different pages */}
           {activeToggle === "Profile" && <Account />}
           {activeToggle === "Socials" && <Socials />}

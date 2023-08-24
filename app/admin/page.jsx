@@ -127,7 +127,7 @@ const Admin = () => {
   useEffect(() => {
     getSession().then((session) => {
       fetchUserData();
-      setUserID(session?.user?.name);
+      // setUserID(session?.user?.name);
       setEMAIL(session?.user?.email);
       // setImage(session?.user?.image);
 
@@ -137,7 +137,7 @@ const Admin = () => {
   // on reload fetch use Session to update the userID and EMAIL
   useEffect(() => {
     getSession().then((session) => {
-      setUserID(session?.user?.name);
+      // setUserID(session?.user?.name);
       setEMAIL(session?.user?.email);
       // setImage(session?.user?.image);
     });

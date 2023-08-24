@@ -18,6 +18,7 @@ import ClickCard from "@/components/ClickCard";
 import ClickButton from "@/components/ClickButton";
 import Title from "@/components/Title";
 import { set } from "mongoose";
+import Error from "@/components/Error";
 
 const ViewBox = ({ params }) => {
   const searchParams = useSearchParams();
@@ -130,10 +131,7 @@ const ViewBox = ({ params }) => {
     <div className="bg-gray-300 h-full w-full">
       {/* if !user found show error else show params.id */}
       {!userData.find((user) => user.username === params.id) ? (
-        <div>
-          <h1>404</h1>
-          <h2>Sorry, we couldn't find that user.</h2>
-        </div>
+        <Error />
       ) : (
         <div className="display bg-gray-300 md:w-full flex-1 overflow-y-auto h-full w-full snap-center flex flex-col justify-center items-center flex-shrink-0">
           <main className="justify-center flex w-full h-full bg-gray-100">
