@@ -74,6 +74,7 @@ const Account = () => {
         setUsername(userData[0].name); // Replace 'username' with the actual property name for the username
         setUserId(userData[0].username); // Replace 'userId' with the actual property name for the userId
         setImage(userData[0].image);
+        
       } catch (error) {
         console.error("Failed to fetch user data", error);
       }
@@ -88,8 +89,11 @@ const Account = () => {
       // console.log(username);
       // console.log(imageURL);
       // console.log(email);
-
-      const response = await fetch(`/api/profile/save`,{ next: { revalidate: 1 } }, {
+      // if image is undefined set it to URL
+      if (imageURL === undefined) {
+        imageURL = URL;
+      }
+      const response = await fetch(`/api/profile/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,9 +128,10 @@ const Account = () => {
   };
   const handleInputChange = (event) => {
     const { value, classList } = event.target;
-
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/; // Regular expression for alphanumeric characters
+    
     if (classList.contains("ID")) {
-      // check if id is already taken
+      // Check if ID is already taken
       if (userData.some((user) => user.username === value)) {
         setIsIdAvailable(false);
         toast({
@@ -136,14 +141,31 @@ const Account = () => {
         });
         return;
       }
+      if (!alphanumericRegex.test(value)) {
+        setIsIdAvailable(false);
+        toast({
+          title: "Invalid ID",
+          description:
+            "ID should only contain alphanumeric letters (a-z, A-Z, 0-9).",
+        });
+        return;
+      }
+      if (value.length < 8 || value.length > 20) {
+        setIsIdAvailable(false);
+        toast({
+          title: "Invalid ID length",
+          description:
+            "ID should be between 8 and 20 characters in length.",
+        });
+        return;
+      }
       setIsIdAvailable(true);
       setUserId(value);
-      // console.log(userId);
     } else if (classList.contains("NAME")) {
       setUsername(value);
-      // console.log(username);
     }
   };
+  
 
   return (
     <div className="flex flex-col h-full w-full">
