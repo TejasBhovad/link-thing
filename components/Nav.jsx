@@ -24,7 +24,7 @@ const Nav = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/profile/load`);
+        const response = await fetch(`/api/profile/load`,{ next: { revalidate: 1 } });
         if (!response.ok) {
           throw new Error("Something went wrong");
         }

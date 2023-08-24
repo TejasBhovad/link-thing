@@ -35,7 +35,7 @@ const ViewBox = ({ params }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`/api/profile/load`);
+      const response = await fetch(`/api/profile/load`,{ next: { revalidate: 1 } });
 
       if (!response.ok) {
         throw new Error("Something went wrong");
@@ -74,7 +74,7 @@ const ViewBox = ({ params }) => {
 
   const fetchUserLinks = async () => {
     try {
-      const response = await fetch(`/api/links/load`);
+      const response = await fetch(`/api/links/load`,{ next: { revalidate: 1 } });
 
       const data = await response.json();
       const userLinks = data.filter((link) => link.creator === userId);

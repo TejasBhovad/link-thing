@@ -24,7 +24,7 @@ const Links = ({ email }) => {
 
   const handleFETCH = async () => {
     try {
-      const response = await fetch(`/api/socials/load`);
+      const response = await fetch(`/api/socials/load`,{ next: { revalidate: 1 } });
       const data = await response.json();
 
       const userData = data.filter((user) => user.creator === Email);

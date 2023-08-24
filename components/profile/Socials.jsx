@@ -57,7 +57,7 @@ const Socials = () => {
       }
       const userId = session.user.email; // Use the email as the user ID
 
-      const response = await fetch(`/api/socials/load`);
+      const response = await fetch(`/api/socials/load`,{ next: { revalidate: 1 } });
 
       const data = await response.json();
       const email = session.user.email;
