@@ -2,7 +2,7 @@
 // import logos
 import Link from "@/components/logos/Link";
 import GitHub from "@/components/logos/GitHub";
-import LinkedIn from "@/components/logos/Linkedin";
+import LinkedIn from "@/components/logos/LinkedIn";
 import Twitter from "@/components/logos/Twitter";
 import Facebook from "@/components/logos/Facebook";
 import Instagram from "@/components/logos/Instagram";
@@ -45,14 +45,15 @@ const ViewBox = ({ params }) => {
       //   console.log(data);
       // filter dat od user
       const foundUser = data.find((user) => user.username === params.id);
-      console.log(foundUser);
+      // console.log(foundUser);
       userId = foundUser.email; // Use the email as the user ID
       // Name = foundUser.name;
       Email = foundUser.email;
+      Name = foundUser.name;
       setEmail(Email);
-      console.log(Email);
+      // console.log(Email);
       ProfilePicture = foundUser.image;
-      console.log(ProfilePicture);
+      // console.log(ProfilePicture);
       // map through data
     } catch (error) {
       console.error("Failed to fetch user data", error);
@@ -77,14 +78,14 @@ const ViewBox = ({ params }) => {
 
       const data = await response.json();
       const userLinks = data.filter((link) => link.creator === userId);
-      console.log(userLinks[0].links);
+      // console.log(userLinks[0].links);
 
 
       setLinksArray(formatUserLinks(userLinks));
 
       // find the about array
     } catch (error) {
-      console.error("Failed to fetch user's links:", error);
+      // console.error("Failed to fetch user's links:", error);
     }
   };
   const formatUserLinks = (userLinks) => {
@@ -107,6 +108,7 @@ const ViewBox = ({ params }) => {
           desc: link.desc,
           link: link.link,
           logo: GitHub,
+          image: link.image,
         });
       } else if (link.type === "title") {
         formattedLinks.push({
@@ -167,6 +169,7 @@ const ViewBox = ({ params }) => {
                       desc={item.desc}
                       logo={item.logo}
                       link={item.link}
+                      image={item.image}
                     />
                   );
                 } else if (item.type === "title") {

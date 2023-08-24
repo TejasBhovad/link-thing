@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 // import logos
 import Link from "@/components/logos/Link";
 import GitHub from "@/components/logos/GitHub";
-import LinkedIn from "@/components/logos/Linkedin";
+import LinkedIn from "@/components/logos/LinkedIn";
 import Twitter from "@/components/logos/Twitter";
 import Facebook from "@/components/logos/Facebook";
 import Instagram from "@/components/logos/Instagram";
@@ -19,7 +19,7 @@ const Links = ({ email }) => {
   const [Email, setEmail] = useState(email);
   useEffect(() => {
     handleFETCH();
-    console.log(Email);
+    // console.log(Email);
   }, []);
 
   const handleFETCH = async () => {
@@ -35,10 +35,10 @@ const Links = ({ email }) => {
         );
         const formattedLinks = formatSocialLinks(userData[0].socialLinks);
         setSocialLinks(formattedLinks);
-        console.log("User's links:", formattedLinks);
+        // console.log("User's links:", formattedLinks);
       }
     } catch (error) {
-      console.error("Failed to fetch user's links:", error);
+      // console.error("Failed to fetch user's links:", error);
     }
   };
 

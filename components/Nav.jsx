@@ -6,11 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { set } from "mongoose";
 const Nav = () => {
   const { data: session } = useSession();
   const isUserLoggedIn = true;
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [image, setImage] = useState(session?.user?.image);
   useEffect(() => {
     const setProvidersList = async () => {
       const response = await getProviders();
@@ -18,7 +20,25 @@ const Nav = () => {
     };
     setProvidersList();
   }, []);
+  const email = session?.user?.email;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`/api/profile/load`);
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+        const data = await response.json();
+        const userData = data.filter((user) => user.email === email);
+        // console.log(userData[0].image);
 
+        setImage(userData[0].image);
+      } catch (error) {
+        console.error("Failed to fetch user data", error);
+      }
+    };
+    fetchUserData();
+  }, [session]);
   return (
     <nav className="h-16 w-full text-3xl py-2 px-5 flex justify-between">
       <div className="flex items-center">
@@ -55,10 +75,10 @@ const Nav = () => {
             </Link>
             <Link href="/profile" className="text-xl font-semibold">
               <Image
-                src={session?.user?.image}
+                src={image}
                 width={40}
                 height={40}
-                alt="profile picture"
+                alt=" "
                 className="object-contain rounded-full"
               />
             </Link>
@@ -85,7 +105,7 @@ const Nav = () => {
         {session?.user ? (
           <div className="flex">
             <Image
-              src={session?.user?.image}
+              src={image}
               height={37}
               width={37}
               alt="profile picture"

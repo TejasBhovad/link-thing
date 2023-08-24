@@ -1,5 +1,6 @@
 import "./globals.css";
 // import "@uploadthing/react/styles.css";
+import { Toaster } from "@/components/ui/toaster"
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import Provider from "@/components/Provider";
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       <body className="w-full h-full">
         <Provider>
           <div className="main w-full h-full">{children}</div>
+          <Toaster />
         </Provider>
       </body>
     </html>

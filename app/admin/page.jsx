@@ -37,6 +37,8 @@ const Admin = () => {
   const name = session?.user?.name;
   const [userID, setUserID] = useState("");
   const [EMAIL, setEMAIL] = useState(session?.user?.email);
+  const [image, setImage] = useState(session?.user?.image);
+  const [Name, setName] = useState(session?.user?.name);
   // Define a state to keep track of the submission status and cool down
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fetchUserData = async () => {
@@ -50,14 +52,16 @@ const Admin = () => {
       setUserData(data);
       const foundUser = data.find((user) => user.email === EMAIL);
       if (foundUser) {
-        console.log(foundUser.username);
+        // console.log(foundUser.username);
+        setImage(foundUser.image);
+        setName(foundUser.name);
         setUserID(foundUser.username);
       } else {
         // Handle the case when user data is not found
-        console.error("User data not found.");
+        // console.error("User data not found.");
       }
     } catch (error) {
-      console.error("Failed to fetch user data", error);
+      // console.error("Failed to fetch user data", error);
     }
   };
   const fetchUserLinks = async () => {
@@ -83,9 +87,9 @@ const Admin = () => {
             formattedLinks.push({
               order: link.order,
               type: link.type,
-              name: name,
+              name: Name,
               Id: userID,
-              imageUrl: profile_picture,
+              imageUrl: link.image,
               email: EMAIL,
             });
           } else if (link.type === "card") {
@@ -95,7 +99,7 @@ const Admin = () => {
               heading: link.heading,
               desc: link.desc,
               link: link.link,
-              logo: GitHub,
+              image: link.image,
             });
           } else if (link.type === "title") {
             formattedLinks.push({
@@ -125,6 +129,7 @@ const Admin = () => {
       fetchUserData();
       setUserID(session?.user?.name);
       setEMAIL(session?.user?.email);
+      // setImage(session?.user?.image);
 
       fetchUserLinks();
     });
@@ -134,29 +139,9 @@ const Admin = () => {
     getSession().then((session) => {
       setUserID(session?.user?.name);
       setEMAIL(session?.user?.email);
+      // setImage(session?.user?.image);
     });
   }, []);
-
-  // useEffect(() => {
-  //   getSession().then((session) => {
-  //     setUserID(session?.user?.name);
-  //     setEMAIL(session?.user?.email);
-  //   });
-
-  //   setTimeout(() => {
-  //     fetchUserData();
-  //     fetchUserLinks();
-  //   }, 1000);
-  // }, [session]);
-
-  // useEffect(() => {
-  //   getSession().then((session) => {
-  //     setUserID(session?.user?.name);
-  //     setEMAIL(session?.user?.email);
-  //     fetchUserData();
-  //     fetchUserLinks();
-  //   });
-  // }, []);
 
   const handleSubmit = async () => {
     try {
@@ -226,6 +211,8 @@ const Admin = () => {
         desc: "",
         link: "",
         logo: GitHub,
+        image:
+          "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
       };
       return [...prevLinksArray, newCard];
     });
@@ -422,7 +409,7 @@ const Admin = () => {
     } else if (item.type === ItemTypes.CARD) {
       return (
         <div
-          className="h-44 bg-gray-100 w-5/6 rounded-lg flex flex-shrink-0 drop-shadow-md"
+          className="h-52 bg-gray-100 w-5/6 rounded-lg flex flex-shrink-0 drop-shadow-md"
           draggable
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
@@ -468,6 +455,17 @@ const Admin = () => {
                 linksArray={linksArray}
                 setLinksArray={setLinksArray}
                 attributeName="link"
+              />
+              {/* added image url */}
+              <InputWithEnterKeyUpdate
+                type="text"
+                name="link"
+                defaultValue={item.image}
+                placeholder="Image URL"
+                index={index}
+                linksArray={linksArray}
+                setLinksArray={setLinksArray}
+                attributeName="image"
               />
             </div>
             <div className="w-20 h-full flex justify-center items-center">
@@ -685,9 +683,9 @@ const Admin = () => {
                   return (
                     <IntroVert
                       key={item.order}
-                      name={item.name}
+                      name={Name}
                       Id={userID}
-                      imageUrl={item.imageUrl}
+                      imageUrl={image}
                       email={EMAIL}
                     />
                   );
@@ -695,9 +693,9 @@ const Admin = () => {
                   return (
                     <IntroHor
                       key={item.order}
-                      name={item.name}
+                      name={Name}
                       Id={userID}
-                      imageUrl={item.imageUrl}
+                      imageUrl={image}
                       email={EMAIL}
                     />
                   );
@@ -707,7 +705,8 @@ const Admin = () => {
                       key={item.order}
                       heading={item.heading}
                       desc={item.desc}
-                      logo={item.logo}
+                      logo={item.image}
+                      image={item.image}
                       link={item.link}
                     />
                   );

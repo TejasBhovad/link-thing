@@ -1,13 +1,18 @@
 "use client";
 import React, { useState } from "react";
+import { Cloudinary } from "@cloudinary/url-gen";
 import DragAndDrop from "@/components/DragAndDrop";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
 import { set } from "mongoose";
 
 const Account = () => {
+  const [files, setFiles] = useState([]);
+
+  const { toast } = useToast();
   // create a session qnd get email
   const { data: session } = useSession();
   const email = session?.user?.email;
@@ -22,24 +27,30 @@ const Account = () => {
   // create array ussate for storing all user data
   const [userData, setUserData] = useState([]);
   const [isIdAvailable, setIsIdAvailable] = useState(true);
+  const [URL, setURL] = useState("");
 
   const handleImageUpload = async () => {
     try {
-      // Send the image data to the server
-      const response = await fetch("/api/uploadthing?slug=images", {
-        method: "POST",
-        body: uploadedImage,
-        headers: {
-          "Content-Type": "image/jpeg", // Adjust the content type as needed
-        },
-      });
-
-      if (response.ok) {
-        console.log("Image uploaded successfully!");
-        // Handle any further actions after successful upload
-      } else {
-        console.error("Failed to upload image.");
-      }
+      const data = new FormData();
+      data.append("file", uploadedImage);
+      data.append("upload_preset", "profile");
+      data.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
+      // data.append("public_id", userId);
+      fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+          setURL(data.url);
+          setImage(data.url);
+          uploadUserData(data.url);
+          // console.log("Image:", data.url);
+        });
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -55,6 +66,7 @@ const Account = () => {
         }
         const data = await response.json();
         setUserData(data);
+        // console.log("DATA" + data);
         // filter out data of current user
         const userData = data.filter((user) => user.email === email);
 
@@ -66,17 +78,16 @@ const Account = () => {
         console.error("Failed to fetch user data", error);
       }
     };
-
     fetchUserData();
   }, [email]);
 
-  const uploadUserData = async () => {
+  const uploadUserData = async (imageURL) => {
     try {
       console.log("uploading user data");
-      console.log(userId);
-      console.log(username);
-      console.log(image);
-      console.log(email);
+      // console.log(userId);
+      // console.log(username);
+      // console.log(imageURL);
+      // console.log(email);
 
       const response = await fetch(`/api/profile/save`, {
         method: "POST",
@@ -86,7 +97,7 @@ const Account = () => {
         body: JSON.stringify({
           username: userId,
           name: username,
-          image: image,
+          image: imageURL,
           email: session.user.email,
         }),
       });
@@ -94,15 +105,22 @@ const Account = () => {
         throw new Error("Something went wrong");
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.error("Failed to fetch user data", error);
     }
   };
   const handleSave = () => {
-    // uploadUserData();
-    console.log(userId);
-    console.log(username);
+    handleImageUpload();
+
+    // // // create delay of 1 second
+    // setTimeout(() => {
+    //   console.log("Image:", image);
+    //   uploadUserData();
+    // }, 1000);
+
+    // console.log(userId);
+    // console.log(username);
   };
   const handleInputChange = (event) => {
     const { value, classList } = event.target;
@@ -111,6 +129,11 @@ const Account = () => {
       // check if id is already taken
       if (userData.some((user) => user.username === value)) {
         setIsIdAvailable(false);
+        toast({
+          title: "ID already taken",
+          description:
+            "Sorry, this ID is already taken. Please try another one.",
+        });
         return;
       }
       setIsIdAvailable(true);
@@ -170,7 +193,7 @@ const Account = () => {
             </div>
             <div className="px-8">
               <span className="superscript font-sm">Profile Picture</span>
-              <DragAndDrop setImage={setUploadedImage} />
+              <DragAndDrop setImage={setUploadedImage} setFiles={setFiles} />
             </div>
           </div>
           {/* Button */}

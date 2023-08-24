@@ -16,7 +16,7 @@ const DangerZone = () => {
   // function to delete account from the database
   const deleteUser = () => {
     // delete user
-    console.log("delete user");
+    console.log("deleted user");
     setDeleteAccount(false);
     signOut({ callbackUrl: "/" });
   };

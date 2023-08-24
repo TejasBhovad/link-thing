@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Add from "@/components/logos/Add";
 
-const DragAndDrop = ({ setImage }) => {
+const DragAndDrop = ({ setImage, setFiles }) => {
   const [thumbnail, setThumbnail] = useState(null);
 
   const handleDrop = (e) => {
@@ -22,6 +22,7 @@ const DragAndDrop = ({ setImage }) => {
       reader.onload = (e) => {
         setThumbnail(e.target.result);
         setImage(e.target.result); // Set the image data in
+        setFiles(file);
       };
       reader.readAsDataURL(file);
     } else {

@@ -28,7 +28,7 @@ const Socials = () => {
   const handlePOST = async () => {
     try {
       console.log("submitting");
-      console.log(socialMediaLinks);
+      // console.log(socialMediaLinks);
       const response = await fetch("/api/socials/save", {
         method: "POST",
         headers: {

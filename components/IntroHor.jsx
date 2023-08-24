@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const IntroHor = ({ name, Id, imageUrl, email }) => {
   useEffect(() => {
-    console.log("email", email);
+    // console.log("email", email);
   }, []);
 ;
   const imageSize = 1080;

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const ClickCard = (props) => {
   return (
@@ -7,7 +8,15 @@ const ClickCard = (props) => {
         <div className="card w-11/12 h-4/5  bg-gray-200 rounded flex">
           <div className="emoji h-full aspect-square flex justify-center items-center">
             <div className="emoji-contain h-3/4 w-3/4 bg-gray-200 rounded">
-              <props.logo alt={props.logo} className="social-logo" />
+              {/* <props.logo alt={props.logo} className="social-logo" />
+               */}
+              <Image
+                src={props.image}
+                width={100}
+                height={100}
+                alt={props.image}
+                className="social-logo"
+              />
             </div>
           </div>
           <div className="w-full text-part h-5/6 flex flex-col justify-center items-start">

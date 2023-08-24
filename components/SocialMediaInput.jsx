@@ -4,7 +4,7 @@ import { useState } from "react";
 // import logos
 import Link from "@/components/logos/Link";
 import GitHub from "@/components/logos/GitHub";
-import LinkedIn from "@/components/logos/Linkedin";
+import LinkedIn from "@/components/logos/LinkedIn";
 import Twitter from "@/components/logos/Twitter";
 import Facebook from "@/components/logos/Facebook";
 import Instagram from "@/components/logos/Instagram";
@@ -89,10 +89,10 @@ const SocialMediaInput = (props) => {
   useEffect(() => {
     // Create a new social media object based on the existing state
     const updatedSocialMedia = { ...socialMedia };
-  
+
     updatedSocialMedia.name = props.socialMedia.name;
     updatedSocialMedia.link = props.socialMedia.link;
-  
+
     switch (props.socialMedia.name) {
       case "GitHub":
         updatedSocialMedia.logo = GitHub;
@@ -118,10 +118,10 @@ const SocialMediaInput = (props) => {
       default:
         updatedSocialMedia.logo = Link;
     }
-  
+
     // Update the state with the new social media object
     setSocialMedia(updatedSocialMedia);
-  
+
     // You can also remove the console.log, as it's not necessary
   }, [props.socialMedia]);
 
