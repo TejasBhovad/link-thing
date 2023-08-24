@@ -89,7 +89,7 @@ const Account = () => {
       // console.log(imageURL);
       // console.log(email);
 
-      const response = await fetch(`/api/profile/save`, {
+      const response = await fetch(`/api/profile/save`,{ next: { revalidate: 1 } }, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

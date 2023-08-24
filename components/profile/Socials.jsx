@@ -29,7 +29,7 @@ const Socials = () => {
     try {
       console.log("submitting");
       // console.log(socialMediaLinks);
-      const response = await fetch("/api/socials/save", {
+      const response = await fetch("/api/socials/save",{ next: { revalidate: 1 } }, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -148,7 +148,7 @@ const Admin = () => {
       setIsSubmitting(true);
       // console.log("submitting");
 
-      const response = await fetch("/api/links/save", {
+      const response = await fetch("/api/links/save",{ next: { revalidate: 1 } }, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
