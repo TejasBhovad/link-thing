@@ -1,6 +1,6 @@
 import Links from "@/models/link";
 import { connectToDB } from "@/utils/database";
-
+export const dynamic = 'force-dynamic';
 export const GET = async () => {
   try {
     await connectToDB();

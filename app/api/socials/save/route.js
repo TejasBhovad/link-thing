@@ -1,6 +1,6 @@
 import Socials from "@/models/social";
 import { connectToDB } from "@/utils/database";
-
+export const dynamic = 'force-dynamic';
 export const POST = async (req, res) => {
   const { creator, socialLinks } = await req.json();
   try {

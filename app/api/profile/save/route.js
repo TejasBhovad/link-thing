@@ -1,6 +1,6 @@
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
-
+export const dynamic = 'force-dynamic';
 export const POST = async (req, res) => {
   try {
     await connectToDB();

@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
 import { randomBytes } from "crypto";
-
+export const dynamic = 'force-dynamic';
 const handler = NextAuth({
   providers: [
     GoogleProvider({

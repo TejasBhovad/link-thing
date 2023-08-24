@@ -1,6 +1,6 @@
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
-
+export const dynamic = 'force-dynamic';
 export const GET = async () => {
   // const { email } = req.query;
   try {

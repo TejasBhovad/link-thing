@@ -1,7 +1,7 @@
 import Socials from "@/models/social";
 
 import { connectToDB } from "@/utils/database";
-
+export const dynamic = 'force-dynamic';
 export const GET = async () => {
   try {
     await connectToDB();
