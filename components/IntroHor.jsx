@@ -11,7 +11,7 @@ const IntroHor = ({ name, Id, imageUrl, email }) => {
 ;
   const imageSize = 1080;
   return (
-    <div className=" h-70 gap-1 w-full flex-col justify-center items-center">
+    <div className="h-70 gap-1 w-full flex-col justify-center items-center">
       <div className="image h-auto justify-center flex items-center min-w-[150px]">
         <Image
           src={imageUrl}
